@@ -1,0 +1,580 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quran Player | Surah Audio with Visualizer</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at top left, #1b5a4a 0, transparent 32%),
+        linear-gradient(145deg, #082d28 0%, #031c19 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Segoe UI", "Poppins", "Amiri", "Cairo", sans-serif;
+      padding: 20px;
+      color: #fff7df;
+    }
+
+    .quran-container {
+      max-width: 750px;
+      width: 100%;
+      background: rgba(20, 40, 35, 0.82);
+      backdrop-filter: blur(14px);
+      border-radius: 28px;
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      padding: 1.8rem 1.5rem 2rem;
+    }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 28px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .select-wrapper,
+    .search-wrapper {
+      min-width: 180px;
+      position: relative;
+    }
+
+    .select-wrapper {
+      flex: 3;
+    }
+
+    .search-wrapper {
+      flex: 2;
+    }
+
+    .select-wrapper i,
+    .search-wrapper i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ffd966;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #surahSelect,
+    #searchInput {
+      width: 100%;
+      min-height: 48px;
+      padding: 13px 18px 13px 44px;
+      background: rgba(10, 25, 22, 0.72);
+      border: 1px solid rgba(255, 215, 120, 0.5);
+      border-radius: 24px;
+      font-size: 0.96rem;
+      color: #fef7e0;
+    }
+
+    #surahSelect {
+      cursor: pointer;
+    }
+
+    #surahSelect option {
+      background: #1e3a35;
+      color: #f9eec1;
+    }
+
+    #searchInput::placeholder {
+      color: #cbbf91;
+    }
+
+    #surahSelect:focus,
+    #searchInput:focus {
+      outline: none;
+      border-color: #ffcf78;
+    }
+
+    .icon-takbeer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 26px;
+      text-align: center;
+    }
+
+    .quran-icon i {
+      font-size: 4.2rem;
+      color: #e9c46a;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+    }
+
+    .takbeer-text {
+      font-family: "Amiri", "Times New Roman", serif;
+      font-size: 2rem;
+      background: linear-gradient(135deg, #fff1bc, #f3ca6c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 700;
+      direction: rtl;
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    .takbeer-trans {
+      font-size: 0.86rem;
+      color: #d4c5a3;
+      letter-spacing: 0.02em;
+      font-weight: 500;
+    }
+
+    .visualizer {
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 24px;
+      padding: 8px 12px;
+      margin: 20px 0;
+      border: 1px solid rgba(255, 215, 130, 0.25);
+    }
+
+    canvas {
+      width: 100%;
+      height: 100px;
+      display: block;
+      border-radius: 18px;
+      background: #03201c;
+    }
+
+    .player-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 22px;
+      margin: 20px 0 12px;
+    }
+
+    .ctrl-btn {
+      background: rgba(0, 0, 0, 0.55);
+      border: none;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 1.65rem;
+      color: #fee3a0;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ctrl-btn:hover {
+      background: #cf9f4a;
+      color: #1c2c24;
+      transform: scale(1.03);
+    }
+
+    .ctrl-btn:disabled {
+      opacity: 0.55;
+      cursor: wait;
+      transform: none;
+    }
+
+    .play-btn {
+      background: #f0bc6e;
+      color: #1f3d36;
+      width: 76px;
+      height: 76px;
+      font-size: 2.1rem;
+    }
+
+    .surah-name {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 1.12rem;
+      font-weight: 600;
+      background: rgba(0, 0, 0, 0.3);
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 24px;
+      color: #ffeaaf;
+      line-height: 1.45;
+    }
+
+    .footer-note {
+      font-size: 0.72rem;
+      text-align: center;
+      color: #b9ac7a;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 550px) {
+      body {
+        padding: 12px;
+      }
+
+      .quran-container {
+        padding: 1.15rem;
+        border-radius: 22px;
+      }
+
+      .ctrl-btn {
+        width: 52px;
+        height: 52px;
+        font-size: 1.35rem;
+      }
+
+      .play-btn {
+        width: 66px;
+        height: 66px;
+        font-size: 1.85rem;
+      }
+
+      .takbeer-text {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="quran-container">
+    <div class="top-bar">
+      <div class="select-wrapper">
+        <i class="fas fa-book-quran" aria-hidden="true"></i>
+        <select id="surahSelect" aria-label="Select Surah"></select>
+      </div>
+      <div class="search-wrapper">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" id="searchInput" placeholder="Search Surah..." aria-label="Search Surah">
+      </div>
+    </div>
+
+    <section class="icon-takbeer" aria-live="polite">
+      <div class="quran-icon">
+        <i class="fas fa-book-open" aria-hidden="true"></i>
+      </div>
+      <div class="takbeer-text" lang="ar">الله أكبر الله أكبر كبيرًا</div>
+      <div class="takbeer-trans">Allahu Akbar - Allah is the Greatest</div>
+      <div class="takbeer-trans" id="statusText">Ready to listen</div>
+    </section>
+
+    <div class="visualizer">
+      <canvas id="visualizerCanvas" width="800" height="100"></canvas>
+    </div>
+
+    <div class="player-controls">
+      <button class="ctrl-btn" id="prevBtn" type="button" aria-label="Previous Surah">
+        <i class="fas fa-backward-step" aria-hidden="true"></i>
+      </button>
+      <button class="ctrl-btn play-btn" id="playPauseBtn" type="button" aria-label="Play">
+        <i class="fas fa-play" id="playIcon" aria-hidden="true"></i>
+      </button>
+      <button class="ctrl-btn" id="nextBtn" type="button" aria-label="Next Surah">
+        <i class="fas fa-forward-step" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div style="display: flex; justify-content: center;">
+      <div class="surah-name" id="currentSurahName">- Surah Al-Fatiha -</div>
+    </div>
+    <div class="footer-note">
+      <i class="fas fa-database" aria-hidden="true"></i>
+      Audio from AlQuran.cloud | Reciter: Mishari Alafasy
+    </div>
+  </main>
+
+  <script>
+    const API_BASE = "https://api.alquran.cloud/v1";
+    const AUDIO_BASE = "https://server8.mp3quran.net/afs";
+
+    const fallbackSurahs = [
+      ["الفاتحة", "Al-Faatiha"], ["البقرة", "Al-Baqara"], ["آل عمران", "Aal-i-Imraan"],
+      ["النساء", "An-Nisaa"], ["المائدة", "Al-Maaida"], ["الأنعام", "Al-An'aam"],
+      ["الأعراف", "Al-A'raaf"], ["الأنفال", "Al-Anfaal"], ["التوبة", "At-Tawba"],
+      ["يونس", "Yunus"]
+    ].map(([arabic, english], index) => ({
+      number: index + 1,
+      name: arabic,
+      englishName: english
+    }));
+
+    const surahSelect = document.getElementById("surahSelect");
+    const searchInput = document.getElementById("searchInput");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const playPauseBtn = document.getElementById("playPauseBtn");
+    const playIcon = document.getElementById("playIcon");
+    const currentSurahName = document.getElementById("currentSurahName");
+    const statusText = document.getElementById("statusText");
+    const canvas = document.getElementById("visualizerCanvas");
+    const canvasCtx = canvas.getContext("2d");
+
+    let surahList = [];
+    let audio = new Audio();
+    let currentSurahIndex = 0;
+    let isPlaying = false;
+    let isLoading = false;
+    let audioContext = null;
+    let analyser = null;
+    let sourceNode = null;
+    let animationId = null;
+    let activeObjectUrl = null;
+
+    audio.crossOrigin = "anonymous";
+
+    function setStatus(text) {
+      statusText.textContent = text;
+    }
+
+    function setLoading(loading) {
+      isLoading = loading;
+      [prevBtn, nextBtn, playPauseBtn, surahSelect, searchInput].forEach((element) => {
+        element.disabled = loading;
+      });
+    }
+
+    function resizeCanvas() {
+      const container = canvas.parentElement;
+      canvas.width = Math.max(320, container.clientWidth - 24);
+      canvas.height = 100;
+    }
+
+    function drawIdleVisualizer() {
+      resizeCanvas();
+      const { width, height } = canvas;
+      canvasCtx.clearRect(0, 0, width, height);
+      for (let x = 0; x < width; x += 12) {
+        const wave = Math.sin(x * 0.035) * 12 + Math.cos(x * 0.012) * 8;
+        const barHeight = 18 + wave;
+        canvasCtx.fillStyle = "rgba(233, 196, 106, 0.45)";
+        canvasCtx.fillRect(x, height / 2 - barHeight / 2, 7, barHeight);
+      }
+    }
+
+    function setupAudioContext() {
+      if (audioContext) return;
+
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+      sourceNode = audioContext.createMediaElementSource(audio);
+      sourceNode.connect(analyser);
+      analyser.connect(audioContext.destination);
+      drawVisualizer();
+    }
+
+    function drawVisualizer() {
+      animationId = requestAnimationFrame(drawVisualizer);
+      if (!analyser || !isPlaying) {
+        drawIdleVisualizer();
+        return;
+      }
+
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      analyser.getByteFrequencyData(dataArray);
+      resizeCanvas();
+
+      const { width, height } = canvas;
+      canvasCtx.clearRect(0, 0, width, height);
+      const barWidth = Math.max(2, (width / bufferLength) * 1.8);
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i += 1) {
+        const percent = dataArray[i] / 255;
+        const barHeight = Math.max(4, height * percent * 0.82);
+        canvasCtx.fillStyle = `hsl(${38 + percent * 24}, 86%, ${48 + percent * 16}%)`;
+        canvasCtx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
+        x += barWidth;
+      }
+    }
+
+    function audioUrlFor(surahNumber) {
+      return `${AUDIO_BASE}/${String(surahNumber).padStart(3, "0")}.mp3`;
+    }
+
+    function revokeActiveObjectUrl() {
+      if (activeObjectUrl) {
+        URL.revokeObjectURL(activeObjectUrl);
+        activeObjectUrl = null;
+      }
+    }
+
+    async function loadSurah(playAfterLoad = false) {
+      const surah = surahList[currentSurahIndex];
+      if (!surah || isLoading) return;
+
+      setLoading(true);
+      setStatus("Loading audio...");
+      isPlaying = false;
+      audio.pause();
+      playIcon.className = "fas fa-play";
+      playPauseBtn.setAttribute("aria-label", "Play");
+      revokeActiveObjectUrl();
+
+      try {
+        audio.src = audioUrlFor(surah.number);
+        audio.load();
+        updateSurahDisplay();
+
+        if (playAfterLoad) {
+          await playAudio();
+        } else {
+          setStatus("Ready to listen");
+        }
+      } catch (error) {
+        console.error(error);
+        setStatus("Audio could not be loaded. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function playAudio() {
+      if (!audio.src) {
+        await loadSurah(true);
+        return;
+      }
+
+      try {
+        setupAudioContext();
+        if (audioContext.state === "suspended") await audioContext.resume();
+        await audio.play();
+        isPlaying = true;
+        playIcon.className = "fas fa-pause";
+        playPauseBtn.setAttribute("aria-label", "Pause");
+        setStatus("Listening...");
+      } catch (error) {
+        console.error(error);
+        setStatus("Playback was blocked. Press play again.");
+      }
+    }
+
+    function pauseAudio() {
+      audio.pause();
+      isPlaying = false;
+      playIcon.className = "fas fa-play";
+      playPauseBtn.setAttribute("aria-label", "Play");
+      setStatus("Paused");
+    }
+
+    function updateSurahDisplay() {
+      const surah = surahList[currentSurahIndex];
+      if (!surah) return;
+      surahSelect.value = String(currentSurahIndex);
+      currentSurahName.textContent = `📖 ${surah.name} (${surah.englishName}) · Surah ${surah.number}`;
+    }
+
+    function populateDropdown(filter = "") {
+      const filterLower = filter.trim().toLowerCase();
+      surahSelect.innerHTML = "";
+
+      surahList.forEach((surah, index) => {
+        const display = `${surah.number}. ${surah.name} (${surah.englishName})`;
+        const match = !filterLower ||
+          display.toLowerCase().includes(filterLower) ||
+          surah.name.includes(filter.trim());
+
+        if (match) {
+          const option = document.createElement("option");
+          option.value = String(index);
+          option.textContent = display;
+          surahSelect.appendChild(option);
+        }
+      });
+
+      if (surahSelect.options.length === 0) {
+        const option = document.createElement("option");
+        option.textContent = "No Surah found";
+        option.disabled = true;
+        surahSelect.appendChild(option);
+        return;
+      }
+
+      const currentStillVisible = Array.from(surahSelect.options)
+        .some((option) => Number(option.value) === currentSurahIndex);
+
+      if (!currentStillVisible) {
+        currentSurahIndex = Number(surahSelect.options[0].value);
+        loadSurah(false);
+      } else {
+        updateSurahDisplay();
+      }
+    }
+
+    async function loadSurahList() {
+      setStatus("Loading Surah list...");
+      try {
+        const response = await fetch(`${API_BASE}/surah`);
+        if (!response.ok) throw new Error("Could not load Surah list.");
+        const payload = await response.json();
+        surahList = payload.data;
+      } catch (error) {
+        console.error(error);
+        surahList = fallbackSurahs;
+        setStatus("Loaded fallback Surah list");
+      }
+
+      populateDropdown();
+      updateSurahDisplay();
+      drawIdleVisualizer();
+      setStatus("Ready to listen");
+    }
+
+    async function changeSurah(offset) {
+      currentSurahIndex = (currentSurahIndex + offset + surahList.length) % surahList.length;
+      searchInput.value = "";
+      populateDropdown();
+      await loadSurah(true);
+    }
+
+    surahSelect.addEventListener("change", async (event) => {
+      const newIndex = Number(event.target.value);
+      if (!Number.isNaN(newIndex) && newIndex !== currentSurahIndex) {
+        currentSurahIndex = newIndex;
+        await loadSurah(true);
+      }
+    });
+
+    searchInput.addEventListener("input", (event) => {
+      populateDropdown(event.target.value);
+    });
+
+    prevBtn.addEventListener("click", () => changeSurah(-1));
+    nextBtn.addEventListener("click", () => changeSurah(1));
+    playPauseBtn.addEventListener("click", () => {
+      if (isPlaying) {
+        pauseAudio();
+      } else {
+        playAudio();
+      }
+    });
+
+    audio.addEventListener("ended", () => {
+      pauseAudio();
+      changeSurah(1);
+    });
+
+    audio.addEventListener("error", () => {
+      pauseAudio();
+      setStatus("Audio error. Please choose another Surah.");
+    });
+
+    window.addEventListener("resize", drawIdleVisualizer);
+    window.addEventListener("beforeunload", () => {
+      revokeActiveObjectUrl();
+      if (animationId) cancelAnimationFrame(animationId);
+      if (audioContext && audioContext.state !== "closed") audioContext.close();
+    });
+
+    loadSurahList();
+  </script>
+</body>
+</html>
