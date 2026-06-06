@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quran Player | Surah Audio with Visualizer</title>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <meta name="google-site-verification" content="-yk_nmLlhow0FulQNrE669M4OvPR7ex1INJkErCpcBM" />
   <meta name="keywords" content="ayah audio, ayahaudio, audio ayah, quran sarif, quran telwat, quran">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
@@ -260,6 +260,14 @@
       border-bottom: 0;
     }
 
+    .translation-list.arabic-list li {
+      direction: rtl;
+      grid-template-columns: 1fr 34px;
+      font-family: "Amiri", "Times New Roman", serif;
+      font-size: 1.18rem;
+      text-align: right;
+    }
+
     .translation-list li.active-ayah {
       background: rgba(240, 188, 110, 0.18);
       color: #fff9e8;
@@ -359,9 +367,16 @@
       </ol>
     </section>
 
+    <section class="translation-panel" aria-label="Arabic subtitle">
+      <div class="translation-header">Arabic Subtitle</div>
+      <ol class="translation-list arabic-list" id="arabicSubtitleList">
+        <li><span>Loading Arabic subtitle...</span><span class="ayah-number">...</span></li>
+      </ol>
+    </section>
+
     <div class="footer-note">
       <i class="fas fa-database" aria-hidden="true"></i>
-      Ayah audio and Bengali translation from AlQuran.cloud
+      Ayah audio, Arabic subtitle, and Bengali translation from AlQuran.cloud
     </div>
   </main>
 
@@ -389,6 +404,7 @@
     const currentSurahName = document.getElementById("currentSurahName");
     const statusText = document.getElementById("statusText");
     const banglaTranslationList = document.getElementById("banglaTranslationList");
+    const arabicSubtitleList = document.getElementById("arabicSubtitleList");
     const canvas = document.getElementById("visualizerCanvas");
     const canvasCtx = canvas.getContext("2d");
 
@@ -474,6 +490,18 @@
       banglaTranslationList.appendChild(item);
     }
 
+    function setArabicLoading(message = "Loading Arabic subtitle...") {
+      arabicSubtitleList.innerHTML = "";
+      const item = document.createElement("li");
+      const text = document.createElement("span");
+      const number = document.createElement("span");
+      number.className = "ayah-number";
+      number.textContent = "...";
+      text.textContent = message;
+      item.append(text, number);
+      arabicSubtitleList.appendChild(item);
+    }
+
     function renderTranslation(ayahs) {
       banglaTranslationList.innerHTML = "";
       ayahs.forEach((ayah, index) => {
@@ -490,12 +518,28 @@
       highlightCurrentAyah();
     }
 
+    function renderArabicSubtitle(ayahs) {
+      arabicSubtitleList.innerHTML = "";
+      ayahs.forEach((ayah, index) => {
+        const item = document.createElement("li");
+        const text = document.createElement("span");
+        const number = document.createElement("span");
+        item.dataset.ayahIndex = String(index);
+        text.textContent = ayah.text;
+        number.className = "ayah-number";
+        number.textContent = ayah.numberInSurah;
+        item.append(text, number);
+        arabicSubtitleList.appendChild(item);
+      });
+      highlightCurrentAyah();
+    }
+
     function highlightCurrentAyah() {
-      const rows = banglaTranslationList.querySelectorAll("li[data-ayah-index]");
+      const rows = document.querySelectorAll(".translation-list li[data-ayah-index]");
       rows.forEach((row) => {
         const isActive = Number(row.dataset.ayahIndex) === currentAyahIndex;
         row.classList.toggle("active-ayah", isActive);
-        if (isActive && isPlaying) {
+        if (isActive && isPlaying && row.parentElement === banglaTranslationList) {
           row.scrollIntoView({ block: "center", behavior: "smooth" });
         }
       });
@@ -525,23 +569,30 @@
     async function loadAyahAudio(surahNumber) {
       if (ayahAudioCache.has(surahNumber)) {
         ayahAudioList = ayahAudioCache.get(surahNumber);
+        renderArabicSubtitle(ayahAudioList);
         return;
       }
 
+      setArabicLoading();
       const response = await fetch(`${API_BASE}/surah/${surahNumber}/${RECITER}`);
       if (!response.ok) throw new Error("Could not load ayah audio.");
       const payload = await response.json();
       const audioItems = (payload?.data?.ayahs || [])
-        .map((ayah) => ayah.audio)
-        .filter(Boolean);
+        .map((ayah) => ({
+          audio: ayah.audio,
+          text: ayah.text,
+          numberInSurah: ayah.numberInSurah
+        }))
+        .filter((ayah) => ayah.audio);
       if (!audioItems.length) throw new Error("Ayah audio was empty.");
       ayahAudioCache.set(surahNumber, audioItems);
       ayahAudioList = audioItems;
+      renderArabicSubtitle(ayahAudioList);
     }
 
     function loadCurrentAyahAudio() {
       if (!ayahAudioList[currentAyahIndex]) return false;
-      audio.src = ayahAudioList[currentAyahIndex];
+      audio.src = ayahAudioList[currentAyahIndex].audio;
       audio.load();
       highlightCurrentAyah();
       return true;
