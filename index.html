@@ -694,10 +694,192 @@ canvas {
   .settings-bar { grid-template-columns: 1fr; }
   .mosque { height: 130px; }
 }
+   /* ===========================
+   OFFLINE OVERLAY
+=========================== */
+#offlineOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(7, 0, 26, 0.92);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+#offlineOverlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+.offline-card {
+  max-width: 380px;
+  width: 100%;
+  background: rgba(20, 4, 50, 0.88);
+  border: 1px solid rgba(212,168,47,0.35);
+  border-radius: 22px;
+  padding: 36px 32px 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow:
+    0 0 0 1px rgba(212,168,47,0.07) inset,
+    0 30px 70px rgba(0,0,0,0.75),
+    0 0 80px rgba(212,168,47,0.07);
+  position: relative;
+  overflow: hidden;
+  animation: offlineCardIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes offlineCardIn {
+  from { transform: translateY(22px) scale(0.97); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+/* Top shimmer */
+.offline-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,47,0.7), rgba(255,224,132,1), rgba(212,168,47,0.7), transparent);
+}
+/* Ambient inner glow */
+.offline-card::after {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 280px; height: 120px;
+  background: radial-gradient(ellipse, rgba(212,168,47,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.offline-icon-ring {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,168,47,0.16) 0%, rgba(212,168,47,0.03) 65%, transparent 100%);
+  border: 1px solid rgba(212,168,47,0.32);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: iconPulse 3s ease-in-out infinite;
+}
+.offline-icon-ring::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,168,47,0.1);
+}
+.offline-icon-ring::after {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,168,47,0.05);
+}
+.offline-icon-ring i {
+  font-size: 1.8rem;
+  color: var(--gold-b);
+  filter: drop-shadow(0 0 12px rgba(255,224,132,0.5));
+}
+.offline-arabic {
+  font-family: 'Amiri', 'Times New Roman', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  direction: rtl;
+  background: linear-gradient(135deg, #fff8f0 0%, var(--gold-b) 40%, var(--gold) 70%, var(--gold-l) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: glowPulse 2.5s ease-in-out infinite;
+  line-height: 1.5;
+}
+.offline-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold-b);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.offline-divider {
+  font-size: 0.5rem;
+  color: rgba(212,168,47,0.35);
+  letter-spacing: 10px;
+}
+.offline-message {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: rgba(255,248,240,0.65);
+  line-height: 1.6;
+  max-width: 280px;
+}
+.offline-sub {
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.75rem;
+  color: rgba(212,168,47,0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.offline-retry-btn {
+  margin-top: 4px;
+  padding: 10px 28px;
+  background: linear-gradient(135deg, var(--gold-d), var(--gold), var(--gold-b), var(--gold));
+  border: none;
+  border-radius: 30px;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #1a0a00;
+  cursor: pointer;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 22px rgba(212,168,47,0.4), 0 6px 20px rgba(0,0,0,0.5);
+  transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+.offline-retry-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.25) 60%, transparent 70%);
+  transform: translateX(-100%);
+  animation: sheen 2.8s ease-in-out infinite;
+}
+.offline-retry-btn:hover {
+  background: linear-gradient(135deg, var(--gold), var(--gold-b), #fff1bc, var(--gold-l));
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 0 40px rgba(212,168,47,0.65), 0 10px 30px rgba(0,0,0,0.5);
+}
+.offline-retry-btn:active { transform: scale(0.97); }
 </style>
 </head>
 <body>
-
+<!-- Offline overlay -->
+<div id="offlineOverlay" role="alert" aria-live="assertive">
+  <div class="offline-card">
+    <div class="offline-icon-ring">
+      <i class="fas fa-wifi" aria-hidden="true"></i>
+    </div>
+    <div class="offline-arabic">لا يوجد اتصال بالإنترنت</div>
+    <div class="offline-title">No Internet Connection</div>
+    <div class="offline-divider">✦ ✦ ✦</div>
+    <p class="offline-message">
+      The Quran Player requires an internet connection to stream ayah audio and translations.
+    </p>
+    <div class="offline-sub">Please check your connection</div>
+    <button class="offline-retry-btn" onclick="checkConnection()">
+      <i class="fas fa-rotate-right" style="margin-right:7px;"></i>Retry
+    </button>
+  </div>
+</div>
 <!-- Star canvas background -->
 <canvas id="bgCanvas"></canvas>
 
@@ -858,7 +1040,46 @@ function drawBg() {
   requestAnimationFrame(drawBg);
 }
 drawBg();
+/* ===========================
+   OFFLINE DETECTION
+=========================== */
+const offlineOverlay = document.getElementById('offlineOverlay');
 
+function updateOnlineStatus() {
+  const offline = !navigator.onLine;
+  offlineOverlay.classList.toggle('visible', offline);
+  if (!offline && isLoading === false && !surahList.length) {
+    loadSurahList();
+  }
+}
+
+function checkConnection() {
+  if (navigator.onLine) {
+    offlineOverlay.classList.remove('visible');
+    if (!surahList.length) loadSurahList();
+  } else {
+    // Shake the card to give feedback
+    const card = offlineOverlay.querySelector('.offline-card');
+    card.style.animation = 'none';
+    void card.offsetWidth; // reflow
+    card.style.animation = 'offlineShake 0.4s ease';
+  }
+}
+
+// Add shake keyframe dynamically
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `@keyframes offlineShake {
+  0%,100%{transform:translateX(0);}
+  20%{transform:translateX(-8px);}
+  40%{transform:translateX(8px);}
+  60%{transform:translateX(-5px);}
+  80%{transform:translateX(5px);}
+}`;
+document.head.appendChild(shakeStyle);
+
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+updateOnlineStatus(); // Check on load
 /* ===========================
    FLOATING SPARKLES
 =========================== */
