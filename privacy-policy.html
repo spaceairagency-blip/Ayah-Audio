@@ -1,0 +1,763 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Ayah Audio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Amiri:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+/* ============================================================
+   RESET & ROOT
+============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold:    #d4a82f;
+  --gold-l:  #f5d06e;
+  --gold-b:  #ffe084;
+  --gold-d:  #a07820;
+  --gold-dim: rgba(212,168,47,0.18);
+  --deep:    #07001a;
+  --purple:  #1a0533;
+  --surface: rgba(20, 4, 50, 0.88);
+  --surface-raised: rgba(28, 6, 65, 0.95);
+  --border-gold: rgba(212, 168, 47, 0.22);
+  --border-gold-strong: rgba(212, 168, 47, 0.5);
+  --text-primary: #fff8f0;
+  --text-gold: #f5d06e;
+  --text-muted: rgba(245, 208, 110, 0.48);
+  --tr: 0.24s cubic-bezier(0.4,0,0.2,1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--deep);
+  font-family: 'Crimson Pro', Georgia, serif;
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   STAR CANVAS
+============================================================ */
+#bgCanvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+/* ============================================================
+   MOSQUE SILHOUETTE (footer decor)
+============================================================ */
+.mosque-footer {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 140px;
+  z-index: 0; pointer-events: none; opacity: 0.65;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180'%3E%3Cg fill='%230d0025' opacity='0.97'%3E%3Crect x='0' y='130' width='1440' height='50'/%3E%3Cellipse cx='720' cy='105' rx='130' ry='90'/%3E%3Crect x='590' y='105' width='260' height='75'/%3E%3Crect x='702' y='28' width='36' height='80'/%3E%3Cellipse cx='720' cy='28' rx='18' ry='26'/%3E%3Crect x='632' y='96' width='10' height='44'/%3E%3Crect x='798' y='96' width='10' height='44'/%3E%3Cellipse cx='380' cy='132' rx='82' ry='58'/%3E%3Crect x='298' y='132' width='164' height='48'/%3E%3Crect x='362' y='82' width='32' height='52'/%3E%3Cellipse cx='378' cy='82' rx='16' ry='22'/%3E%3Crect x='312' y='122' width='9' height='40'/%3E%3Crect x='447' y='122' width='9' height='40'/%3E%3Cellipse cx='1060' cy='132' rx='82' ry='58'/%3E%3Crect x='978' y='132' width='164' height='48'/%3E%3Crect x='1042' y='82' width='32' height='52'/%3E%3Cellipse cx='1058' cy='82' rx='16' ry='22'/%3E%3Crect x='982' y='122' width='9' height='40'/%3E%3Crect x='1127' y='122' width='9' height='40'/%3E%3Cellipse cx='140' cy='142' rx='58' ry='42'/%3E%3Crect x='82' y='142' width='116' height='38'/%3E%3Crect x='118' y='106' width='22' height='38'/%3E%3Cellipse cx='129' cy='106' rx='11' ry='16'/%3E%3Cellipse cx='1300' cy='142' rx='58' ry='42'/%3E%3Crect x='1242' y='142' width='116' height='38'/%3E%3Crect x='1288' y='106' width='22' height='38'/%3E%3Cellipse cx='1299' cy='106' rx='11' ry='16'/%3E%3C/g%3E%3C/svg%3E") bottom/cover no-repeat;
+}
+
+/* ============================================================
+   GOLD FRAME
+============================================================ */
+.frame { position: fixed; inset: 0; border: 1px solid rgba(212,168,47,0.3); z-index: 1; pointer-events: none; box-shadow: inset 0 0 80px rgba(212,168,47,0.03), 0 0 40px rgba(212,168,47,0.06); }
+.frame::before, .frame::after { content: ''; position: absolute; width: 52px; height: 52px; border-color: var(--gold-b); border-style: solid; }
+.frame::before { top: -1px; left: -1px; border-width: 2.5px 0 0 2.5px; }
+.frame::after  { bottom: -1px; right: -1px; border-width: 0 2.5px 2.5px 0; }
+.corner-tr { position: fixed; top: 0; right: 0; width: 52px; height: 52px; border-top: 2.5px solid var(--gold-b); border-right: 2.5px solid var(--gold-b); z-index: 1; pointer-events: none; }
+.corner-bl { position: fixed; bottom: 0; left: 0; width: 52px; height: 52px; border-bottom: 2.5px solid var(--gold-b); border-left: 2.5px solid var(--gold-b); z-index: 1; pointer-events: none; }
+
+/* ============================================================
+   SPARKLES
+============================================================ */
+.spk { position: fixed; pointer-events: none; z-index: 2; animation: spkFly var(--d,8s) var(--dl,0s) linear infinite; opacity: 0; font-size: var(--fs,11px); color: var(--gold-b); }
+@keyframes spkFly { 0%{transform:translateY(100vh) translateX(0) rotate(0deg);opacity:0;} 10%{opacity:0.6;} 90%{opacity:0.6;} 100%{transform:translateY(-20vh) translateX(var(--dx,40px)) rotate(540deg);opacity:0;} }
+
+/* ============================================================
+   LANTERNS
+============================================================ */
+#lanterns { position: fixed; top: 0; left: 0; right: 0; height: 160px; z-index: 2; pointer-events: none; }
+.lantern { position: absolute; top: 0; display: flex; flex-direction: column; align-items: center; animation: sway var(--sw,3s) ease-in-out infinite alternate; transform-origin: top center; }
+@keyframes sway { from{transform:rotate(-5deg);} to{transform:rotate(5deg);} }
+.l-rope { width: 1.5px; background: linear-gradient(var(--gold-d), var(--gold)); height: var(--rh,50px); }
+.l-top  { width: calc(var(--lw,28px) + 8px); height: 6px; background: var(--gold); border-radius: 3px; }
+.l-body { width: var(--lw,28px); height: var(--lh,40px); background: radial-gradient(ellipse at 40% 30%, var(--gc2,#ffe580), var(--gc1,#e87000) 60%, var(--gc0,#a04000)); border-radius: 5px 5px 8px 8px; border: 1.5px solid var(--gold); box-shadow: 0 0 16px 5px var(--glow,rgba(255,160,0,0.5)), 0 0 44px 10px var(--glow2,rgba(255,120,0,0.2)); animation: flicker var(--fl,1.4s) ease-in-out infinite alternate; }
+@keyframes flicker { from{box-shadow:0 0 14px 4px var(--glow,rgba(255,160,0,0.45)),0 0 36px 8px var(--glow2,rgba(255,120,0,0.18));} to{box-shadow:0 0 26px 9px var(--glow,rgba(255,200,80,0.7)),0 0 60px 16px var(--glow2,rgba(255,160,0,0.3));} }
+.l-bot    { width: calc(var(--lw,28px) - 4px); height: 5px; background: var(--gold-d); border-radius: 0 0 4px 4px; }
+.l-tassel { width: 2px; height: 12px; background: var(--gold); }
+
+/* ============================================================
+   MAIN LAYOUT
+============================================================ */
+.page-wrapper {
+  position: relative; z-index: 10;
+  max-width: 820px; margin: 0 auto;
+  padding: 100px 24px 180px;
+}
+
+/* ============================================================
+   HERO HEADER
+============================================================ */
+.hero {
+  text-align: center;
+  margin-bottom: 52px;
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes fadeSlideUp { from{opacity:0;transform:translateY(22px);} to{opacity:1;transform:translateY(0);} }
+
+.hero-icon-ring {
+  width: 68px; height: 68px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,168,47,0.2) 0%, rgba(212,168,47,0.05) 65%, transparent 100%);
+  border: 1px solid rgba(212,168,47,0.35);
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 18px; position: relative;
+  animation: iconPulse 3s ease-in-out infinite;
+}
+.hero-icon-ring::before { content:''; position:absolute; inset:-8px; border-radius:50%; border:1px solid rgba(212,168,47,0.12); }
+.hero-icon-ring i { font-size: 1.6rem; color: var(--gold-b); filter: drop-shadow(0 0 12px rgba(255,224,132,0.6)); }
+@keyframes iconPulse { 0%,100%{box-shadow:0 0 12px rgba(212,168,47,0.2),0 0 36px rgba(212,168,47,0.06);} 50%{box-shadow:0 0 28px rgba(212,168,47,0.5),0 0 70px rgba(212,168,47,0.15);} }
+
+.hero-bismillah {
+  font-family: 'Amiri', serif;
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  font-weight: 700; direction: rtl;
+  background: linear-gradient(135deg, #fff8f0 0%, var(--gold-b) 35%, var(--gold) 65%, var(--gold-l) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: glowPulse 2.5s ease-in-out infinite;
+  line-height: 1.4; margin-bottom: 6px;
+}
+@keyframes glowPulse { 0%,100%{filter:drop-shadow(0 0 6px rgba(255,224,132,0.25));} 50%{filter:drop-shadow(0 0 18px rgba(255,224,132,0.8)) drop-shadow(0 0 42px rgba(212,168,47,0.45));} }
+
+.hero-app-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(0.75rem, 2.5vw, 1.05rem);
+  font-weight: 700; letter-spacing: 0.2em;
+  color: var(--gold-l); text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.hero-divider {
+  display: flex; align-items: center; gap: 14px;
+  margin: 16px auto; max-width: 340px;
+}
+.hero-divider::before, .hero-divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,47,0.5), transparent);
+}
+.hero-divider-icon { color: var(--gold); font-size: 0.62rem; letter-spacing: 8px; }
+
+.hero-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.1rem, 3.5vw, 1.65rem);
+  font-weight: 700; color: var(--text-primary);
+  letter-spacing: 0.06em; margin-bottom: 10px;
+}
+
+.hero-sub {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic; font-size: clamp(0.88rem, 2vw, 1.05rem);
+  color: var(--text-muted); line-height: 1.6;
+}
+
+.last-updated {
+  display: inline-block; margin-top: 16px;
+  padding: 5px 18px; border-radius: 30px;
+  background: rgba(212,168,47,0.07); border: 1px solid rgba(212,168,47,0.25);
+  font-family: 'Cinzel Decorative', serif; font-size: 0.55rem;
+  color: var(--text-muted); letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+/* ============================================================
+   TOC NAV
+============================================================ */
+.toc-card {
+  background: var(--surface);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-gold);
+  border-radius: 18px; padding: 22px 24px 18px;
+  margin-bottom: 36px; position: relative; overflow: hidden;
+  animation: fadeSlideUp 0.7s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+}
+.toc-card::before {
+  content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,47,0.6), rgba(255,224,132,0.9), rgba(212,168,47,0.6), transparent);
+}
+.toc-heading {
+  font-family: 'Cinzel Decorative', serif; font-size: 0.62rem;
+  font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.toc-heading i { font-size: 0.7rem; }
+.toc-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 5px 20px; }
+.toc-list li a {
+  font-family: 'Crimson Pro', serif; font-size: 0.9rem;
+  color: rgba(245,208,110,0.65); text-decoration: none;
+  display: flex; align-items: center; gap: 7px;
+  padding: 4px 6px; border-radius: 6px;
+  transition: color var(--tr), background var(--tr);
+}
+.toc-list li a:hover { color: var(--gold-b); background: rgba(212,168,47,0.08); }
+.toc-list li a::before { content: '✦'; font-size: 0.42rem; color: var(--gold-d); flex-shrink: 0; }
+
+/* ============================================================
+   SECTION CARDS
+============================================================ */
+.policy-section {
+  background: var(--surface);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-gold);
+  border-radius: 18px; padding: 28px 28px 24px;
+  margin-bottom: 20px; position: relative; overflow: hidden;
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1), border-color var(--tr), box-shadow var(--tr);
+}
+.policy-section.visible { opacity: 1; transform: translateY(0); }
+.policy-section::before {
+  content: ''; position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,47,0.45), transparent);
+}
+.policy-section:hover {
+  border-color: rgba(212,168,47,0.38);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(212,168,47,0.05);
+}
+
+.section-header {
+  display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px;
+}
+.section-icon {
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(212,168,47,0.1); border: 1px solid rgba(212,168,47,0.25);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold-l); font-size: 0.88rem;
+}
+.section-title-group { flex: 1; }
+.section-number {
+  font-family: 'Cinzel Decorative', serif; font-size: 0.5rem;
+  color: var(--gold-d); letter-spacing: 0.15em; text-transform: uppercase; display: block; margin-bottom: 3px;
+}
+.section-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(0.75rem, 2vw, 0.92rem);
+  font-weight: 700; color: var(--gold-b); letter-spacing: 0.08em;
+}
+
+.section-divider {
+  height: 1px; background: rgba(212,168,47,0.14);
+  margin-bottom: 16px; border: none;
+}
+
+.section-body {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(0.92rem, 2vw, 1.05rem);
+  color: rgba(255,248,240,0.72);
+  line-height: 1.78;
+}
+.section-body p { margin-bottom: 12px; }
+.section-body p:last-child { margin-bottom: 0; }
+
+.section-body ul, .section-body ol {
+  padding-left: 0; list-style: none; margin-bottom: 12px;
+}
+.section-body ul li, .section-body ol li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 5px 0; border-bottom: 1px solid rgba(212,168,47,0.06);
+  font-size: clamp(0.9rem, 2vw, 1.02rem);
+}
+.section-body ul li:last-child, .section-body ol li:last-child { border-bottom: none; }
+.section-body ul li::before { content: '✦'; color: var(--gold-d); font-size: 0.5rem; margin-top: 6px; flex-shrink: 0; }
+.section-body ol { counter-reset: ol-c; }
+.section-body ol li::before { counter-increment: ol-c; content: counter(ol-c); font-family: 'Cinzel Decorative', serif; font-size: 0.6rem; color: var(--gold-d); background: rgba(212,168,47,0.1); border: 1px solid rgba(212,168,47,0.22); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+
+.highlight-box {
+  background: rgba(212,168,47,0.06); border: 1px solid rgba(212,168,47,0.2);
+  border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0;
+  padding: 12px 16px; margin: 14px 0;
+  font-style: italic; color: rgba(245,208,110,0.8);
+  font-size: 0.96rem;
+}
+.highlight-box strong { color: var(--gold-b); font-style: normal; }
+
+strong { color: var(--gold-l); font-weight: 600; }
+
+/* ============================================================
+   CONTACT CARD
+============================================================ */
+.contact-card {
+  background: linear-gradient(135deg, rgba(28,6,65,0.9) 0%, rgba(7,0,26,0.8) 100%);
+  border: 1px solid var(--border-gold-strong);
+  border-radius: 18px; padding: 28px;
+  margin-bottom: 20px; position: relative; overflow: hidden; text-align: center;
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1);
+}
+.contact-card.visible { opacity: 1; transform: translateY(0); }
+.contact-card::before {
+  content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,168,47,0.7), rgba(255,224,132,1), rgba(212,168,47,0.7), transparent);
+}
+.contact-arabic {
+  font-family: 'Amiri', serif; font-size: 1.3rem; font-weight: 700;
+  direction: rtl; color: var(--gold-l);
+  animation: glowPulse 2.5s ease-in-out infinite; margin-bottom: 8px;
+}
+.contact-title {
+  font-family: 'Cinzel Decorative', serif; font-size: 0.8rem;
+  color: var(--gold-b); letter-spacing: 0.12em; margin-bottom: 14px;
+}
+.contact-text {
+  font-family: 'Crimson Pro', serif; font-size: 1rem;
+  color: rgba(255,248,240,0.65); line-height: 1.7; max-width: 480px;
+  margin: 0 auto 18px;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.page-footer {
+  text-align: center; margin-top: 44px; padding-bottom: 20px;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1);
+}
+.page-footer.visible { opacity: 1; transform: translateY(0); }
+.footer-divider { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.footer-divider::before, .footer-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,168,47,0.4), transparent); }
+.footer-divider-sym { color: var(--gold); font-size: 0.55rem; letter-spacing: 8px; }
+.footer-brand { font-family: 'Cinzel Decorative', serif; font-size: 0.65rem; color: var(--gold-l); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 6px; }
+.footer-note { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 0.8rem; color: rgba(212,168,47,0.32); }
+
+/* ============================================================
+   BACK TO TOP
+============================================================ */
+#backToTop {
+  position: fixed; bottom: 32px; right: 28px; z-index: 50;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-d), var(--gold));
+  border: none; color: #1a0a00; font-size: 0.88rem; cursor: pointer;
+  box-shadow: 0 0 18px rgba(212,168,47,0.4), 0 6px 18px rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+#backToTop.show { opacity: 1; pointer-events: all; }
+#backToTop:hover { transform: translateY(-3px) scale(1.08); box-shadow: 0 0 28px rgba(212,168,47,0.6); }
+
+/* ============================================================
+   GEOMETRIC DECOR SVG
+============================================================ */
+.geo-decor {
+  position: fixed; pointer-events: none; z-index: 1; opacity: 0.055;
+}
+.geo-decor.top-right { top: 60px; right: 50px; width: 200px; height: 200px; }
+.geo-decor.bottom-left { bottom: 80px; left: 40px; width: 160px; height: 160px; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 600px) {
+  .page-wrapper { padding: 80px 14px 160px; }
+  .toc-list { grid-template-columns: 1fr; }
+  .policy-section { padding: 20px 16px 18px; }
+  .section-title { font-size: 0.72rem; }
+  #backToTop { bottom: 24px; right: 16px; }
+  .geo-decor { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Star canvas -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- Geometric Islamic decorative SVGs -->
+<svg class="geo-decor top-right" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#d4a82f" stroke-width="1">
+    <polygon points="100,8 192,56 192,144 100,192 8,144 8,56" />
+    <polygon points="100,30 174,68 174,132 100,170 26,132 26,68" />
+    <polygon points="100,52 156,80 156,120 100,148 44,120 44,80" />
+    <line x1="100" y1="8" x2="100" y2="192"/>
+    <line x1="8" y1="56" x2="192" y2="144"/>
+    <line x1="192" y1="56" x2="8" y2="144"/>
+    <circle cx="100" cy="100" r="30"/>
+    <circle cx="100" cy="100" r="18"/>
+    <circle cx="100" cy="100" r="5" fill="#d4a82f"/>
+  </g>
+</svg>
+
+<svg class="geo-decor bottom-left" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#d4a82f" stroke-width="1">
+    <rect x="10" y="10" width="140" height="140" transform="rotate(45 80 80)"/>
+    <rect x="28" y="28" width="104" height="104" transform="rotate(45 80 80)"/>
+    <rect x="46" y="46" width="68" height="68" transform="rotate(45 80 80)"/>
+    <circle cx="80" cy="80" r="28"/>
+    <circle cx="80" cy="80" r="14"/>
+    <circle cx="80" cy="80" r="4" fill="#d4a82f"/>
+    <line x1="80" y1="10" x2="80" y2="150"/>
+    <line x1="10" y1="80" x2="150" y2="80"/>
+  </g>
+</svg>
+
+<!-- Mosque footer decor -->
+<div class="mosque-footer"></div>
+
+<!-- Gold frame corners -->
+<div class="frame"></div>
+<div class="corner-tr"></div>
+<div class="corner-bl"></div>
+
+<!-- Lanterns -->
+<div id="lanterns"></div>
+
+<!-- Sparkles -->
+<div id="sparkles"></div>
+
+<!-- Back to top -->
+<button id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+<!-- ============================================================
+     PAGE CONTENT
+============================================================ -->
+<div class="page-wrapper">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-icon-ring"><i class="fas fa-shield-halved"></i></div>
+    <div class="hero-bismillah" lang="ar">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ</div>
+    <div class="hero-app-name">Ayah &nbsp;·&nbsp; Audio</div>
+    <div class="hero-divider"><span class="hero-divider-icon">✦ ✦ ✦</span></div>
+    <h1 class="hero-title">Privacy Policy</h1>
+    <p class="hero-sub">Your trust is sacred to us. This policy explains clearly how<br>the Ayah Audio handles your information.</p>
+    <span class="last-updated">Last updated: June 2026</span>
+  </header>
+
+  <!-- Table of Contents -->
+  <nav class="toc-card" aria-label="Table of contents">
+    <div class="toc-heading"><i class="fas fa-list"></i> Contents</div>
+    <ul class="toc-list">
+      <li><a href="#s1">Information We Collect</a></li>
+      <li><a href="#s2">How We Use Information</a></li>
+      <li><a href="#s3">Third-Party Services</a></li>
+      <li><a href="#s4">Local Storage & Cookies</a></li>
+      <li><a href="#s5">Audio Streaming</a></li>
+      <li><a href="#s6">Children's Privacy</a></li>
+      <li><a href="#s7">Data Security</a></li>
+      <li><a href="#s8">Your Rights</a></li>
+      <li><a href="#s9">Changes to This Policy</a></li>
+      <li><a href="#s10">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- Section 1 -->
+  <section class="policy-section" id="s1">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-database"></i></div>
+      <div class="section-title-group">
+        <span class="section-number">Section 01</span>
+        <div class="section-title">Information We Collect</div>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <p>Quran Player is designed with your privacy as a priority. We collect only the minimal information necessary to provide a functional, personalized audio experience. We do <strong>not</strong> require account registration, and we do <strong>not</strong> collect personally identifiable information such as your name, email address, or phone number.</p>
+      <p>The following categories of information may be processed:</p>
+      <ul>
+        <li><strong>Playback preferences</strong> — your selected reciter, volume, skip duration, and display settings are stored locally on your device.</li>
+        <li><strong>Surah and ayah position</strong> — to restore your listening position between sessions, stored entirely on your device.</li>
+        <li><strong>Device connectivity status</strong> — checked locally to display the offline notice. No data is sent to our servers.</li>
+        <li><strong>Anonymous usage patterns</strong> — only if explicitly enabled through an analytics service, and fully anonymized with no link to your identity.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Section 2 -->
+  <section class="policy-section" id="s2">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-gears"></i></div>
+      <div class="section-title-group">
+        <span class="section-number">Section 02</span>
+        <div class="section-title">How We Use Information</div>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <p>Any information stored is used solely to deliver and improve your experience within the Quran Player application. Specifically, we use data to:</p>
+      <ol>
+        <li>Remember your reciter selection, volume level, and display preferences across sessions.</li>
+        <li>Resume playback from your last listened surah and ayah.</li>
+        <li>Apply your skip-duration and sleep-timer settings instantly.</li>
+        <li>Display the appropriate Arabic subtitle and Bangla translation panels based on your toggle choices.</li>
+        <li>Detect offline status locally so we can notify you clearly without streaming attempts failing silently.</li>
+      </ol>
+      <div class="highlight-box">
+        <strong>We do not sell, rent, trade, or otherwise share your preferences or usage data with any third party for commercial purposes.</strong> Your listening habits are your own.
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3 -->
+  <section class="policy-section" id="s3">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-cloud"></i></div>
+      <div class="section-title-group">
+        <span class="section-number">Section 03</span>
+        <div class="section-title">Third-Party Services</div>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <p>To deliver Quranic audio and translations, the Quran Player communicates with the following external services. Each has its own privacy policy which we encourage you to review:</p>
+      <ul>
+        <li><strong>AlQuran.cloud API</strong> — provides Arabic text, Bangla (Bengali) translations, and per-ayah audio streams for all 114 surahs across multiple reciters. Your IP address may be visible to this service when audio is streamed.</li>
+        <li><strong>Google Fonts</strong> — serves the Amiri, Cinzel Decorative, and Crimson Pro typefaces used in the interface. Google may log font requests per their standard CDN policy.</li>
+        <li><strong>Font Awesome CDN</strong> — serves icon assets. Standard CDN logging may apply.</li>
+      </ul>
+      <p>We have no control over how these third parties process data. We choose providers whose services are trusted, widely used, and appropriate for a Quranic application. If you are on a restricted network or wish to avoid third-party CDN requests, please consult each provider's privacy documentation.</p>
+    </div>
+  </section>
+
+  <!-- Section 4 -->
+  <section class="policy-section" id="s4">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-hard-drive"></i></div>
+      <div class="section-title-group">
+        <span class="section-number">Section 04</span>
+        <div class="section-title">Local Storage & Cookies</div>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <p>The Quran Player uses the browser's <strong>localStorage</strong> API to persist your settings between visits. This is a client-side mechanism — data is stored only on your device and is never transmitted to our servers.</p>
+      <p>The following key is used in localStorage:</p>
+      <ul>
+        <li><strong>quranPlayerSettings2</strong> — stores your reciter choice, volume, skip durations, shuffle/repeat state, and visibility toggles for Arabic and Bangla panels.</li>
+      </ul>
+      <p>We do <strong>not</strong> set any tracking cookies. We do not use advertising cookies, analytics cookies, or fingerprinting techniques. You may clear localStorage at any time through your browser's settings, which will reset all player preferences to their defaults.</p>
+    </div>
+  </section>
+
+  <!-- Section 5 -->
+  <section class="policy-section" id="s5">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-music"></i></div>
+      <div class="section-title-group">
+        <span class="section-number">Section 05</span>
+        <div class="section-title">Audio Streaming</div>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <p>All Quranic audio is streamed on-demand from the AlQuran.cloud API. Audio is not hosted on our own servers, and we do not cache or store audio on our infrastructure. Recitation audio files are served directly from the API provider to your device.</p>
+      <div class="highlight-box">
+        When you select a surah and press play, your device makes a direct HTTP request to <strong>api.alquran.cloud</strong>. Your IP address is visible to that service as part of the standard internet request process — this is the same as visiting any website.
+      </div>
+      <p>Translation data (both Arabic text and Bangla translation) fetched from the same API is cached temporarily in memory during your session to reduce repeated network calls. This in-session cache is cleared when you close or refresh the app.</p>
+    </div>
+  </section>
+
+  <!-- Section 6 -->
+  <section class="policy-section" id="s6">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-child-reaching"></i></div>
+      <div class="section-title-group">
+        <span class="section-number">Section 06</span>
+        <div class="section-title">Children's Privacy</div>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <p>The Quran Player is a spiritual and educational tool suitable for all ages, including children. We have designed it specifically to collect no personal information whatsoever — there are no accounts, no sign-ups, and no forms requiring any user data.</p>
+      <p>Because we collect no personal data from any user, the application is inherently compliant with children's privacy considerations. Parents and guardians can use this application with full confidence that no information about their children is being collected or shared.</p>
+      <p>If you have any concerns about your child's use of this application, please contact us at the address provided in the Contact section below.</p>
+    </div>
+  </section>
+
+  <!-- Section 7 -->
+  <section class="policy-section" id="s7">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-lock"></i></div>
+      <div class="section-title-group">
+        <span class="section-number">Section 07</span>
+        <div class="section-title">Data Security</div>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <p>Because we do not collect or store personal data on our servers, our attack surface is minimal by design. The settings data stored in your browser's localStorage is protected by your device's own security model — it is accessible only to the origin domain of the Quran Player application.</p>
+      <p>We employ the following practices to ensure a secure experience:</p>
+      <ul>
+        <li>All API communications are made over <strong>HTTPS</strong>, ensuring that requests between your device and AlQuran.cloud are encrypted in transit.</li>
+        <li>No user credentials are ever required or requested.</li>
+        <li>No third-party advertising scripts, tracking pixels, or analytics SDKs are embedded in the application code.</li>
+        <li>The application does not request microphone, camera, or location permissions.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Section 8 -->
+  <section class="policy-section" id="s8">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-user-shield"></i></div>
+      <div class="section-title-group">
+        <span class="section-number">Section 08</span>
+        <div class="section-title">Your Rights</div>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <p>As a user of the Quran Player, you retain full control over any data stored on your device. Since all preference data is stored locally via localStorage, you may:</p>
+      <ul>
+        <li><strong>Access your data</strong> — open your browser's developer tools, navigate to Application → Local Storage, and inspect the <em>quranPlayerSettings2</em> key.</li>
+        <li><strong>Delete your data</strong> — clear your browser's site data or localStorage for this domain at any time to remove all saved preferences.</li>
+        <li><strong>Opt out of third-party CDNs</strong> — use a browser extension such as uBlock Origin to block requests to Google Fonts or Font Awesome if you wish. The app will fall back to system fonts.</li>
+        <li><strong>Request information</strong> — contact us at any time if you have questions about what data may exist relating to your usage.</li>
+      </ul>
+      <p>Users in the European Union (GDPR), United Kingdom (UK GDPR), California (CCPA), and other privacy-law jurisdictions are entitled to the rights described above. Since we do not process personal data, most data subject request rights are satisfied by design.</p>
+    </div>
+  </section>
+
+  <!-- Section 9 -->
+  <section class="policy-section" id="s9">
+    <div class="section-header">
+      <div class="section-icon"><i class="fas fa-file-pen"></i></div>
+      <div class="section-title-group">
+        <span class="section-number">Section 09</span>
+        <div class="section-title">Changes to This Policy</div>
+      </div>
+    </div>
+    <hr class="section-divider">
+    <div class="section-body">
+      <p>We may update this Privacy Policy from time to time to reflect changes in the application's features, the services we integrate with, or applicable laws. When we make changes, we will:</p>
+      <ul>
+        <li>Update the <strong>"Last updated"</strong> date at the top of this page.</li>
+        <li>Notify users through a notice within the application if changes are material.</li>
+        <li>Maintain previous versions of this policy upon request.</li>
+      </ul>
+      <p>We encourage you to review this policy periodically. Continued use of the Quran Player after any changes constitutes your acceptance of the updated terms. If you do not agree with any changes, you may discontinue use of the application.</p>
+    </div>
+  </section>
+
+  <!-- Contact Card -->
+  <div class="contact-card" id="s10">
+    <div class="contact-arabic" lang="ar">جَزَاكَ اللهُ خَيْرًا</div>
+    <div class="contact-title">Section 10 — Contact Us</div>
+    <p class="contact-text">
+      If you have any questions, concerns, or requests regarding this Privacy Policy or the handling of your data, we welcome you to reach out. We aim to respond to all enquiries promptly and with full transparency.
+    </p>
+    <p style="font-family:'Cinzel Decorative',serif; font-size:0.6rem; color:var(--text-muted); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">Questions & Support</p>
+    <p style="font-family:'Crimson Pro',serif; font-size:0.95rem; color:rgba(245,208,110,0.7); font-style:italic; line-height:1.8;">
+      Please contact the developer through the app's listing page<br>on the Google Play Store, or via the project's official repository.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <div class="footer-divider"><span class="footer-divider-sym">✦ ✦ ✦</span></div>
+    <div class="footer-brand">Quran Player &nbsp;·&nbsp; Sacred Audio</div>
+    <p class="footer-note">Privacy Policy · © 2026 · Made with devotion &amp; care</p>
+  </footer>
+
+</div><!-- end .page-wrapper -->
+
+<script>
+/* ============================================================
+   STAR BACKGROUND
+============================================================ */
+const bgC = document.getElementById('bgCanvas'), bgX = bgC.getContext('2d');
+function resizeBg() { bgC.width = window.innerWidth; bgC.height = window.innerHeight; }
+resizeBg();
+window.addEventListener('resize', resizeBg);
+const stars = Array.from({length:180}, ()=>({
+  x: Math.random()*bgC.width, y: Math.random()*bgC.height,
+  r: Math.random()*1.5+0.3,
+  a: Math.random(),
+  da: (Math.random()*0.004+0.001)*(Math.random()<0.5?1:-1)
+}));
+function drawBg() {
+  bgC.width = window.innerWidth; bgC.height = window.innerHeight;
+  const g = bgX.createLinearGradient(0,0,bgC.width,bgC.height);
+  g.addColorStop(0,'#07001a'); g.addColorStop(0.4,'#0f0128');
+  g.addColorStop(0.7,'#1a0533'); g.addColorStop(1,'#07001a');
+  bgX.fillStyle = g; bgX.fillRect(0,0,bgC.width,bgC.height);
+  const g1 = bgX.createRadialGradient(bgC.width*0.1, bgC.height*0.08, 0, bgC.width*0.1, bgC.height*0.08, bgC.width*0.4);
+  g1.addColorStop(0,'rgba(212,168,47,0.09)'); g1.addColorStop(1,'transparent');
+  bgX.fillStyle = g1; bgX.fillRect(0,0,bgC.width,bgC.height);
+  stars.forEach(s=>{
+    s.a += s.da;
+    if(s.a>1){s.a=1;s.da*=-1;} if(s.a<0.08){s.a=0.08;s.da*=-1;}
+    bgX.globalAlpha = s.a; bgX.fillStyle='#fff8f0';
+    bgX.beginPath(); bgX.arc(s.x,s.y,s.r,0,Math.PI*2); bgX.fill();
+  });
+  bgX.globalAlpha = 1;
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+/* ============================================================
+   SPARKLES
+============================================================ */
+const spkSyms = ['✦','✧','⋆','★','☽'];
+const spkWrap = document.getElementById('sparkles');
+for(let i=0;i<10;i++){
+  const s = document.createElement('div'); s.className='spk';
+  s.textContent = spkSyms[Math.floor(Math.random()*spkSyms.length)];
+  s.style.cssText = `left:${Math.random()*100}%;--d:${7+Math.random()*9}s;--dl:${Math.random()*12}s;--dx:${(Math.random()-0.5)*100}px;--fs:${9+Math.random()*10}px;`;
+  spkWrap.appendChild(s);
+}
+
+/* ============================================================
+   LANTERNS
+============================================================ */
+const lanternData = [
+  {left:'3%',  rh:42, lw:22, lh:34, sw:'2.3s', gc0:'#a03000', gc1:'#e07000', gc2:'#ffe060', glow:'rgba(255,140,0,0.55)', glow2:'rgba(255,100,0,0.2)'},
+  {left:'14%', rh:64, lw:30, lh:44, sw:'3.0s', gc0:'#005a70', gc1:'#00aac0', gc2:'#70eeff', glow:'rgba(0,170,200,0.5)', glow2:'rgba(0,130,170,0.2)'},
+  {left:'86%', rh:60, lw:30, lh:44, sw:'2.4s', gc0:'#580075', gc1:'#9848c8', gc2:'#d8a8ff', glow:'rgba(150,72,200,0.5)', glow2:'rgba(110,52,170,0.2)'},
+  {left:'97%', rh:48, lw:22, lh:34, sw:'2.8s', gc0:'#a03000', gc1:'#e07000', gc2:'#ffe060', glow:'rgba(255,140,0,0.55)', glow2:'rgba(255,100,0,0.2)'},
+];
+const lEl = document.getElementById('lanterns');
+lanternData.forEach((d,i)=>{
+  lEl.innerHTML += `<div class="lantern" style="left:${d.left};--rh:${d.rh}px;--lw:${d.lw}px;--lh:${d.lh}px;--sw:${d.sw};--gc0:${d.gc0};--gc1:${d.gc1};--gc2:${d.gc2};--glow:${d.glow};--glow2:${d.glow2};--fl:${1.2+i*0.14}s;animation-delay:${i*0.3}s"><div class="l-rope"></div><div class="l-top"></div><div class="l-body"></div><div class="l-bot"></div><div class="l-tassel"></div></div>`;
+});
+
+/* ============================================================
+   SCROLL REVEAL
+============================================================ */
+const revealEls = document.querySelectorAll('.policy-section, .contact-card, .page-footer');
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach((el, i)=>{
+  el.style.transitionDelay = `${i * 0.04}s`;
+  observer.observe(el);
+});
+
+/* ============================================================
+   BACK TO TOP
+============================================================ */
+const backToTopBtn = document.getElementById('backToTop');
+window.addEventListener('scroll', ()=>{
+  backToTopBtn.classList.toggle('show', window.scrollY > 300);
+});
+backToTopBtn.addEventListener('click', ()=>{
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ============================================================
+   SMOOTH ANCHOR SCROLL
+============================================================ */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
